@@ -37,3 +37,18 @@ pub struct Config {
     bg_color: ColorCutlie,
     commands: Vec<Command>,
 }
+
+pub fn toml_read(){
+    let home_diroctory = home_dir();
+    let config: Option<String> = match home_diroctory {
+        Some(dir) => {
+            let mut new_dir = dir.as_os_str().to_str().unwrap().to_string();
+            new_dir.push_str("/.config/lh.toml");
+            match fs::read_to_string(new_dir) {
+                Ok(f) => Some(f),
+                Err(_) => None,
+            }
+        }
+        None => None,
+    };
+}
