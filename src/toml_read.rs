@@ -1,8 +1,9 @@
-use serde_derive::Deserialize;
+use serde_derive::{Deserialize, Serialize};
 use toml::from_str;
 use home::home_dir;
 use std::fs;
 
+#[derive(Deserialize, Debug, Clone, Serialize)]
 pub enum ColorCutlie {
     Black,
     Red,
@@ -23,7 +24,7 @@ pub enum ColorCutlie {
 }
 
 
-
+#[derive(Deserialize, Debug, Clone, Serialize)]
 pub struct Command {
     name: String,
     logo: Option<String>,
@@ -31,6 +32,7 @@ pub struct Command {
     color: ColorCutlie,
 }
 
+#[derive(Deserialize, Debug, Clone, Serialize)]
 pub struct Config {
     bg_color: ColorCutlie,
     commands: Vec<Command>,
