@@ -4,3 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+home = "0.5.11"
+serde = { version = "1.0.217", features = ["serde_derive"] }
+serde_derive = "1.0.217"
+toml = "0.8.19"
