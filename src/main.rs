@@ -1,3 +1,5 @@
+mod parserer;
+
 fn main() {
-    println!("Hello, world!");
+    parserer::run();
 }
