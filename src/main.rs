@@ -1,4 +1,7 @@
 use cutlie::runner;
+use cutlie::parser;
+
 fn main() {
-    println!("Hello, world!");
+    let args = parser::parse();
+    println!("Parsed command: {:?}", args.command);
 }
