@@ -5,7 +5,7 @@ use clap::{Parser, Subcommand};
 #[command(about = "A short cut tool for specific commands")]
 pub struct Cli {
     #[command(subcommand)]
-    command: Commands,
+    pub command: Commands,
 }
 
 #[derive(Subcommand)]
