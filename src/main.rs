@@ -3,5 +3,5 @@ use cutlie::parser;
 
 fn main() {
     let args = parser::parse();
-    println!("Parsed command: {}", args.command);
+    println!("Parsed command: {:?}", args.command);
 }
