@@ -42,7 +42,7 @@ fn main() {
             let config = tomlrw::read("config.toml").unwrap();
             for command in &config.commands {
                 if command.key == name {
-                    if let Some(sub_command) = sub {
+                    if let Some(ref sub_command) = sub {
                         if let Some(cmd) = command.sub_commands.get(&sub_command) {
                             runner::run(cmd);
                         }
