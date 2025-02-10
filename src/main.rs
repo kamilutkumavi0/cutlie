@@ -4,11 +4,13 @@ use cutlie::tomlrw;
 use std::collections::HashMap;
 
 fn main() {
+    // let deneme = tomlrw::Config::new();
+    // tomlrw::write("config.toml", &deneme).unwrap();
     let args = parser::parse();
     println!("Parsed command: {:?}", args.command);
 
     match args.command {
-        parser::Commands::Add { name, sub } => {
+        parser::Commands::Add { name, value, sub } => {
             let mut config = tomlrw::read("config.toml").unwrap();
             let mut sub_commands = HashMap::new();
             if let Some(sub_command) = sub {
@@ -27,12 +29,12 @@ fn main() {
             config.commands.retain(|command| command.key != name);
             tomlrw::write("config.toml", &config).unwrap();
         }
-        parser::Commands::Update { name, sub } => {
+        parser::Commands::Update { name, value, sub } => {
             let mut config = tomlrw::read("config.toml").unwrap();
             for command in &mut config.commands {
                 if command.key == name {
                     if let Some(ref sub_command) = sub {
-                        command.sub_commands.insert(sub_command.clone(), *sub_command.clone());
+                        command.sub_commands.insert(sub_command.clone(), (*sub_command.clone()).to_string());
                     }
                 }
             }

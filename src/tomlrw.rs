@@ -15,6 +15,12 @@ pub struct Command {
 pub struct Config {
     pub commands: Vec<Command>,
 }
+impl Config{
+    pub fn new() -> Config {
+        let commands: Vec<Command> = Vec::new();
+        Config{commands}
+    }
+}
 
 pub fn read(file_path: &str) -> Result<Config, io::Error> {
     let mut file = File::open(file_path).unwrap();
