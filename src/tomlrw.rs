@@ -5,14 +5,14 @@ use std::io::{self, Read, Write};
 use toml;
 
 #[derive(Serialize, Deserialize)]
-struct Command {
+pub struct Command {
     pub key: String,
     pub value: String,
     pub sub_commands: HashMap<String, String>,
 }
 
 #[derive(Serialize, Deserialize)]
-struct Config {
+pub struct Config {
     pub commands: Vec<Command>,
 }
 
