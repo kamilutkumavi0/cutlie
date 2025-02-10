@@ -14,6 +14,8 @@ pub enum Commands {
         #[arg(short, long)]
         name: String,
         #[arg(short, long)]
+        value: String,
+        #[arg(short, long)]
         sub: Option<String>,
     },
     Delete {
@@ -23,6 +25,8 @@ pub enum Commands {
     Update {
         #[arg(short, long)]
         name: String,
+        #[arg(short, long)]
+        value: String,
         #[arg(short, long)]
         sub: Option<String>,
     },

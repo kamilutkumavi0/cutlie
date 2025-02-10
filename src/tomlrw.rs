@@ -5,15 +5,21 @@ use std::io::{self, Read, Write};
 use toml;
 
 #[derive(Serialize, Deserialize)]
-struct Command {
-    key: String,
-    value: String,
-    sub_commands: HashMap<String, String>,
+pub struct Command {
+    pub key: String,
+    pub value: String,
+    pub sub_commands: HashMap<String, String>,
 }
 
 #[derive(Serialize, Deserialize)]
-struct Config {
-    commands: Vec<Command>,
+pub struct Config {
+    pub commands: Vec<Command>,
+}
+impl Config{
+    pub fn new() -> Config {
+        let commands: Vec<Command> = Vec::new();
+        Config{commands}
+    }
 }
 
 pub fn read(file_path: &str) -> Result<Config, io::Error> {
