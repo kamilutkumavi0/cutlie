@@ -1,6 +1,6 @@
 use clap::{Parser, Subcommand};
 
-#[derive(Parser)]
+#[derive(Parser, Debug)]
 #[command(name = "cutlie")]
 #[command(about = "A short cut tool for specific commands")]
 pub struct Cli {
