@@ -8,25 +8,25 @@ use toml;
 struct Command {
     key: String,
     value: String,
+    sub_commands: HashMap<String, String>,
 }
 
 #[derive(Serialize, Deserialize)]
 struct Config {
     commands: Vec<Command>,
-    sub_commands: HashMap<String, Vec<Command>>,
 }
 
 pub fn read(file_path: &str) -> Result<Config, io::Error> {
-    let mut file = File::open(file_path).unwrap();
+    let mut file = File::open(file_path)?;
     let mut contents = String::new();
-    file.read_to_string(&mut contents).unwrap();
-    let config: Config = toml::from_str(&contents).unwrap();
+    file.read_to_string(&mut contents)?;
+    let config: Config = toml::from_str(&contents)?;
     Ok(config)
 }
 
 pub fn write(file_path: &str, config: &Config) -> Result<(), io::Error> {
-    let contents = toml::to_string(config).unwrap();
-    let mut file = File::create(file_path).unwrap();
+    let contents = toml::to_string(config)?;
+    let mut file = File::create(file_path)?;
     file.write_all(contents.as_bytes())?;
     Ok(())
 }
