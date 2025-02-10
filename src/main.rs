@@ -31,7 +31,7 @@ fn main() {
             let mut config = tomlrw::read("config.toml").unwrap();
             for command in &mut config.commands {
                 if command.key == name {
-                    if let Some(ref sub_command) = sub {
+                    if let Some(sub_command) = sub {
                         command.sub_commands.insert(sub_command.clone(), sub_command);
                     }
                 }
@@ -43,7 +43,7 @@ fn main() {
             for command in &config.commands {
                 if command.key == name {
                     if let Some(ref sub_command) = sub {
-                        if let Some(cmd) = command.sub_commands.get(&sub_command) {
+                        if let Some(cmd) = command.sub_commands.get(sub_command) {
                             runner::run(cmd);
                         }
                     } else {
