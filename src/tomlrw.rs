@@ -6,14 +6,14 @@ use toml;
 
 #[derive(Serialize, Deserialize)]
 struct Command {
-    key: String,
-    value: String,
-    sub_commands: HashMap<String, String>,
+    pub key: String,
+    pub value: String,
+    pub sub_commands: HashMap<String, String>,
 }
 
 #[derive(Serialize, Deserialize)]
 struct Config {
-    commands: Vec<Command>,
+    pub commands: Vec<Command>,
 }
 
 pub fn read(file_path: &str) -> Result<Config, io::Error> {
