@@ -17,9 +17,9 @@ struct Config {
 }
 
 pub fn read(file_path: &str) -> Result<Config, io::Error> {
-    let mut file = File::open(file_path)?;
+    let mut file = File::open(file_path).unwrap();
     let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
+    file.read_to_string(&mut contents).unwrap();
     let config: Config = toml::from_str(&contents)?;
     Ok(config)
 }
