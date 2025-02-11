@@ -25,16 +25,11 @@ fn main() {
     }
 
     match args.command {
-        parser::Commands::Add { name, value, sub } => {
+        parser::Commands::Add { name, value } => {
             let mut config = tomlrw::read(&config_path).unwrap();
-            let mut sub_commands = HashMap::new();
-            if let Some(sub_command) = sub {
-                sub_commands.insert(sub_command.clone(), sub_command);
-            }
             let command = tomlrw::Command {
                 key: name.clone(),
-                value: name,
-                sub_commands,
+                value,
             };
             config.commands.push(command);
             tomlrw::write(&config_path, &config).unwrap();
@@ -44,31 +39,23 @@ fn main() {
             config.commands.retain(|command| command.key != name);
             tomlrw::write(&config_path, &config).unwrap();
         }
-        parser::Commands::Update { name, value, sub } => {
+        parser::Commands::Update { name, value } => {
             let mut config = tomlrw::read(&config_path).unwrap();
             for command in &mut config.commands {
                 if command.key == name {
-                    if let Some(ref sub_command) = sub {
-                        command.sub_commands.insert(sub_command.clone(), (*sub_command.clone()).to_string());
-                    }
+
                 }
             }
             tomlrw::write(&config_path, &config).unwrap();
         }
-        parser::Commands::Run { name, sub } => {
+        parser::Commands::Run { name } => {
             let config = tomlrw::read(&config_path).unwrap();
             let mut sim_vec: Vec<String> = Vec::new();
             let mut checker_runner = false;
             for command in &config.commands {
                 if command.key == name {
-                    if let Some(ref sub_command) = sub {
-                        if let Some(cmd) = command.sub_commands.get(sub_command) {
-                            runner::run(cmd);
-                            checker_runner = true;
-                        }
-                    } else {
-                        runner::run(&command.value);
-                    }
+                    runner::run(&command.value);
+                    checker_runner = true;
                 } else if jaro_winkler(&command.key, &name) > 0.6 {
                     sim_vec.push(command.key.clone());
                 }
@@ -83,14 +70,7 @@ fn main() {
                 let selected = sim_vec[selection].clone();
                 for command in &config.commands {
                     if command.key == selected {
-                        if let Some(ref sub_command) = sub {
-                            if let Some(cmd) = command.sub_commands.get(sub_command) {
-                                runner::run(cmd);
-                                checker_runner = true;
-                            }
-                        } else {
                             runner::run(&command.value);
-                        }
                     }
                 }
             }

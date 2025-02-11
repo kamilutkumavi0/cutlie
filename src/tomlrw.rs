@@ -9,7 +9,6 @@ use std::env;
 pub struct Command {
     pub key: String,
     pub value: String,
-    pub sub_commands: HashMap<String, String>,
 }
 
 #[derive(Serialize, Deserialize)]

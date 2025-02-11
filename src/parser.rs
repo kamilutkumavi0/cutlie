@@ -15,8 +15,6 @@ pub enum Commands {
         name: String,
         #[arg(short, long)]
         value: String,
-        #[arg(short, long)]
-        sub: Option<String>,
     },
     Delete {
         #[arg(short, long)]
@@ -27,14 +25,10 @@ pub enum Commands {
         name: String,
         #[arg(short, long)]
         value: String,
-        #[arg(short, long)]
-        sub: Option<String>,
     },
     Run {
         #[arg(short, long)]
         name: String,
-        #[arg(short, long)]
-        sub: Option<String>,
     },
 }
 
