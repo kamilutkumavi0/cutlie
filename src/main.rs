@@ -1,16 +1,17 @@
 use cutlie::runner;
 use cutlie::parser;
-use cutlie::tomlrw;
+use cutlie::tomlrw::{self, Command};
 use std::collections::HashMap;
 use std::env;
 use std::fs::File;
 use std::io::Write;
+use strsim::jaro_winkler;
+use dialoguer::Select;
 
 fn main() {
-    // let deneme = tomlrw::Config::new();
-    // tomlrw::write(".cutlie.toml", &deneme).unwrap();
+    // println!("The similarity between '{}' and '{}' is {}", string1, string2, similarity);
     let args = parser::parse();
-    println!("Parsed command: {:?}", args.command);
+    // println!("Parsed command: {:?}", args.command);
 
     let home_dir = env::var("HOME").unwrap();
     let config_path = format!("{}/.cutlie.toml", home_dir);
@@ -56,14 +57,40 @@ fn main() {
         }
         parser::Commands::Run { name, sub } => {
             let config = tomlrw::read(&config_path).unwrap();
+            let mut sim_vec: Vec<String> = Vec::new();
+            let mut checker_runner = false;
             for command in &config.commands {
                 if command.key == name {
                     if let Some(ref sub_command) = sub {
                         if let Some(cmd) = command.sub_commands.get(sub_command) {
                             runner::run(cmd);
+                            checker_runner = true;
                         }
                     } else {
                         runner::run(&command.value);
+                    }
+                } else if jaro_winkler(&command.key, &name) > 0.6 {
+                    sim_vec.push(command.key.clone());
+                }
+            }
+            if !checker_runner {
+                let selection = Select::new()
+                    .with_prompt("What do you choose?")
+                    .items(&sim_vec)
+                    .interact()
+                    .unwrap();
+
+                let selected = sim_vec[selection].clone();
+                for command in &config.commands {
+                    if command.key == selected {
+                        if let Some(ref sub_command) = sub {
+                            if let Some(cmd) = command.sub_commands.get(sub_command) {
+                                runner::run(cmd);
+                                checker_runner = true;
+                            }
+                        } else {
+                            runner::run(&command.value);
+                        }
                     }
                 }
             }
