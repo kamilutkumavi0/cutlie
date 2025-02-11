@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::{self, Read, Write};
 use toml;
+use std::env;
 
 #[derive(Serialize, Deserialize)]
 pub struct Command {
@@ -23,7 +24,9 @@ impl Config{
 }
 
 pub fn read(file_path: &str) -> Result<Config, io::Error> {
-    let mut file = File::open(file_path).unwrap();
+    let home_dir = env::var("HOME").unwrap();
+    let config_path = format!("{}/.cutlie.toml", home_dir);
+    let mut file = File::open(&config_path).unwrap();
     let mut contents = String::new();
     file.read_to_string(&mut contents).unwrap();
     let config: Config = toml::from_str(&contents).unwrap();
@@ -31,8 +34,10 @@ pub fn read(file_path: &str) -> Result<Config, io::Error> {
 }
 
 pub fn write(file_path: &str, config: &Config) -> Result<(), io::Error> {
+    let home_dir = env::var("HOME").unwrap();
+    let config_path = format!("{}/.cutlie.toml", home_dir);
     let contents = toml::to_string(config).unwrap();
-    let mut file = File::create(file_path).unwrap();
+    let mut file = File::create(&config_path).unwrap();
     file.write_all(contents.as_bytes()).unwrap();
     Ok(())
 }

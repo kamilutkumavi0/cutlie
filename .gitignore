@@ -23,3 +23,6 @@ Cargo.lock
 # Added by cargo
 
 /target
+
+# Ignore the hidden configuration file
+.cutlie.toml
