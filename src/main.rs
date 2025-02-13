@@ -1,12 +1,12 @@
-use cutlie::runner;
 use cutlie::parser;
+use cutlie::runner;
 use cutlie::tomlrw::{self, Command};
+use dialoguer::Select;
 use std::collections::HashMap;
 use std::env;
 use std::fs::File;
 use std::io::Write;
 use strsim::jaro_winkler;
-use dialoguer::Select;
 
 fn main() {
     // println!("The similarity between '{}' and '{}' is {}", string1, string2, similarity);
@@ -42,9 +42,7 @@ fn main() {
         parser::Commands::Update { name, value } => {
             let mut config = tomlrw::read(&config_path).unwrap();
             for command in &mut config.commands {
-                if command.key == name {
-
-                }
+                if command.key == name {}
             }
             tomlrw::write(&config_path, &config).unwrap();
         }
@@ -70,7 +68,7 @@ fn main() {
                 let selected = sim_vec[selection].clone();
                 for command in &config.commands {
                     if command.key == selected {
-                            runner::run(&command.value);
+                        runner::run(&command.value);
                     }
                 }
             }
