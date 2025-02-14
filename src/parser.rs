@@ -11,23 +11,19 @@ pub struct Cli {
 #[derive(Subcommand, Debug)]
 pub enum Commands {
     Add {
-        #[arg(short, long)]
         name: String,
         #[arg(short, long)]
         value: String,
     },
     Delete {
-        #[arg(short, long)]
         name: String,
     },
     Update {
-        #[arg(short, long)]
         name: String,
         #[arg(short, long)]
         value: String,
     },
     Run {
-        #[arg(short, long)]
         name: String,
     },
 }

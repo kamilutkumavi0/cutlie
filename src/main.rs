@@ -1,8 +1,7 @@
 use cutlie::parser;
 use cutlie::runner;
-use cutlie::tomlrw::{self, Command};
+use cutlie::tomlrw;
 use dialoguer::Select;
-use std::collections::HashMap;
 use std::env;
 use std::fs::File;
 use std::io::Write;
@@ -26,28 +25,40 @@ fn main() {
 
     match args.command {
         parser::Commands::Add { name, value } => {
-            let mut config = tomlrw::read(&config_path).unwrap();
+            let mut config = tomlrw::read().unwrap();
             let command = tomlrw::Command {
                 key: name.clone(),
                 value,
             };
-            config.commands.push(command);
-            tomlrw::write(&config_path, &config).unwrap();
+            let mut checker = false;
+            for command in &mut config.commands {
+                if command.key == name {
+                    checker = true;
+                    break;
+                }
+            }
+            if !checker {
+                config.commands.push(command);
+                tomlrw::write(&config).unwrap();
+            }
         }
         parser::Commands::Delete { name } => {
-            let mut config = tomlrw::read(&config_path).unwrap();
+            let mut config = tomlrw::read().unwrap();
             config.commands.retain(|command| command.key != name);
-            tomlrw::write(&config_path, &config).unwrap();
+            tomlrw::write(&config).unwrap();
         }
         parser::Commands::Update { name, value } => {
-            let mut config = tomlrw::read(&config_path).unwrap();
+            let mut config = tomlrw::read().unwrap();
             for command in &mut config.commands {
-                if command.key == name {}
+                if command.key == name {
+                    command.value = value;
+                    break;
+                }
             }
-            tomlrw::write(&config_path, &config).unwrap();
+            tomlrw::write(&config).unwrap();
         }
         parser::Commands::Run { name } => {
-            let config = tomlrw::read(&config_path).unwrap();
+            let config = tomlrw::read().unwrap();
             let mut sim_vec: Vec<String> = Vec::new();
             let mut checker_runner = false;
             for command in &config.commands {

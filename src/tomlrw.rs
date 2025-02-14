@@ -1,9 +1,8 @@
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::env;
 use std::fs::File;
 use std::io::{self, Read, Write};
 use toml;
-use std::env;
 
 #[derive(Serialize, Deserialize)]
 pub struct Command {
@@ -15,14 +14,14 @@ pub struct Command {
 pub struct Config {
     pub commands: Vec<Command>,
 }
-impl Config{
+impl Config {
     pub fn new() -> Config {
         let commands: Vec<Command> = Vec::new();
-        Config{commands}
+        Config { commands }
     }
 }
 
-pub fn read(file_path: &str) -> Result<Config, io::Error> {
+pub fn read() -> Result<Config, io::Error> {
     let home_dir = env::var("HOME").unwrap();
     let config_path = format!("{}/.cutlie.toml", home_dir);
     let mut file = File::open(&config_path).unwrap();
@@ -32,7 +31,7 @@ pub fn read(file_path: &str) -> Result<Config, io::Error> {
     Ok(config)
 }
 
-pub fn write(file_path: &str, config: &Config) -> Result<(), io::Error> {
+pub fn write(config: &Config) -> Result<(), io::Error> {
     let home_dir = env::var("HOME").unwrap();
     let config_path = format!("{}/.cutlie.toml", home_dir);
     let contents = toml::to_string(config).unwrap();
