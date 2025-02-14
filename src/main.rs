@@ -24,11 +24,16 @@ fn main() {
     }
 
     match args.command {
-        parser::Commands::Add { name, value } => {
+        parser::Commands::Add {
+            name,
+            value,
+            description,
+        } => {
             let mut config = tomlrw::read().unwrap();
             let command = tomlrw::Command {
                 key: name.clone(),
                 value,
+                description,
             };
             let mut checker = false;
             for command in &mut config.commands {

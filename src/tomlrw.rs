@@ -8,6 +8,7 @@ use toml;
 pub struct Command {
     pub key: String,
     pub value: String,
+    pub description: Option<String>,
 }
 
 #[derive(Serialize, Deserialize)]

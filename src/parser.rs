@@ -14,6 +14,8 @@ pub enum Commands {
         name: String,
         #[arg(short, long)]
         value: String,
+        #[arg(short, long)]
+        description: Option<String>,
     },
     Delete {
         name: String,
