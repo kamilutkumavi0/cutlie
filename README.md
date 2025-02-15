@@ -64,6 +64,18 @@ Example:
 cutlie run myssh
 ```
 
+### List all commands
+
+```sh
+cutlie list
+```
+
+Example:
+
+```sh
+cutlie list
+```
+
 ## Dependencies
 
 Cutlie depends on the following libraries:

@@ -28,6 +28,7 @@ pub enum Commands {
     Run {
         name: String,
     },
+    List,
 }
 
 pub fn parse() -> Cli {

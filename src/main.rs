@@ -89,5 +89,11 @@ fn main() {
                 }
             }
         }
+        parser::Commands::List => {
+            let config = tomlrw::read().unwrap();
+            for command in &config.commands {
+                println!("{}", command);
+            }
+        }
     }
 }
