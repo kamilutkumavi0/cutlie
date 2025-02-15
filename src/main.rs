@@ -29,7 +29,7 @@ fn main() {
             value,
             description,
         } => {
-            let mut config = tomlrw::read().unwrap();
+            let mut config = tomlrw::read().unwrap_or(tomlrw::Config::new());
             let command = tomlrw::Command {
                 key: name.clone(),
                 value,

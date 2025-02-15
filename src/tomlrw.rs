@@ -33,14 +33,17 @@ impl fmt::Display for Command {
     }
 }
 
-pub fn read() -> Result<Config, io::Error> {
+pub fn read() -> Option<Config> {
     let home_dir = env::var("HOME").unwrap();
     let config_path = format!("{}/.cutlie.toml", home_dir);
     let mut file = File::open(&config_path).unwrap();
     let mut contents = String::new();
     file.read_to_string(&mut contents).unwrap();
-    let config: Config = toml::from_str(&contents).unwrap();
-    Ok(config)
+    if let Ok(config) = toml::from_str(&contents) {
+        Some(config)
+    } else {
+        None
+    }
 }
 
 pub fn write(config: &Config) -> Result<(), io::Error> {
