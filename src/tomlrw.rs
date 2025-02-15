@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::env;
+use std::fmt;
 use std::fs::File;
 use std::io::{self, Read, Write};
 use toml;
@@ -15,10 +16,20 @@ pub struct Command {
 pub struct Config {
     pub commands: Vec<Command>,
 }
+
 impl Config {
     pub fn new() -> Config {
         let commands: Vec<Command> = Vec::new();
         Config { commands }
+    }
+}
+impl fmt::Display for Command {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        if let Some(description) = &self.description {
+            write!(f, "{}: {}", self.key, description)
+        } else {
+            write!(f, "{}", self.key)
+        }
     }
 }
 

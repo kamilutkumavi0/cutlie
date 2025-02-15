@@ -1,6 +1,6 @@
 use cutlie::parser;
 use cutlie::runner;
-use cutlie::tomlrw;
+use cutlie::tomlrw::{self, Command};
 use dialoguer::Select;
 use std::env;
 use std::fs::File;
@@ -64,14 +64,14 @@ fn main() {
         }
         parser::Commands::Run { name } => {
             let config = tomlrw::read().unwrap();
-            let mut sim_vec: Vec<String> = Vec::new();
+            let mut sim_vec: Vec<&Command> = Vec::new();
             let mut checker_runner = false;
             for command in &config.commands {
                 if command.key == name {
                     runner::run(&command.value);
                     checker_runner = true;
                 } else if jaro_winkler(&command.key, &name) > 0.6 {
-                    sim_vec.push(command.key.clone());
+                    sim_vec.push(&command);
                 }
             }
             if !checker_runner {
@@ -81,9 +81,9 @@ fn main() {
                     .interact()
                     .unwrap();
 
-                let selected = sim_vec[selection].clone();
+                let selected = sim_vec[selection];
                 for command in &config.commands {
-                    if command.key == selected {
+                    if command.key == selected.key {
                         runner::run(&command.value);
                     }
                 }
