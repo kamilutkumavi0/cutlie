@@ -2,6 +2,8 @@
 name = "cutlie"
 version = "0.1.0"
 edition = "2021"
+description = "Cutlie is a short cut tool for you."
+license= "MIT"
 
 [dependencies]
 clap = { version = "4.5.28", features = ["derive"] }

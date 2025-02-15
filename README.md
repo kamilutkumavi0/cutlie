@@ -1,6 +1,6 @@
 # cutlie
 
-Cutlie is a short cut tool for specific commands, similar to an SSH command with an IP address.
+Cutlie is a short cut tool for you.
 
 ## Installation
 
