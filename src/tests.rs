@@ -4,11 +4,17 @@ mod tests {
     use crate::parser;
     use crate::runner;
     use crate::tomlrw::{self, Command};
+    use clap::Parser;
 
     #[test]
     fn test_parser_add_command() {
         let args = parser::Cli::parse_from(&["cutlie", "add", "test", "--value", "echo test"]);
-        if let parser::Commands::Add { name, value, description } = args.command {
+        if let parser::Commands::Add {
+            name,
+            value,
+            description,
+        } = args.command
+        {
             assert_eq!(name, "test");
             assert_eq!(value, "echo test");
             assert_eq!(description, None);
@@ -44,6 +50,9 @@ mod tests {
         assert_eq!(read_config.commands.len(), 1);
         assert_eq!(read_config.commands[0].key, "test");
         assert_eq!(read_config.commands[0].value, "echo test");
-        assert_eq!(read_config.commands[0].description, Some("Test command".to_string()));
+        assert_eq!(
+            read_config.commands[0].description,
+            Some("Test command".to_string())
+        );
     }
 }
