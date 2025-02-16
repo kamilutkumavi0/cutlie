@@ -1,8 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::parser;
-    use crate::runner;
     use crate::tomlrw::{self, Command};
     use clap::Parser;
 

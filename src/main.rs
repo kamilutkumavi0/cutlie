@@ -8,9 +8,7 @@ use std::io::Write;
 use strsim::jaro_winkler;
 
 fn main() {
-    // println!("The similarity between '{}' and '{}' is {}", string1, string2, similarity);
     let args = parser::parse();
-    // println!("Parsed command: {:?}", args.command);
 
     let home_dir = if let Ok(env_var) = env::var("HOME") {
         env_var
