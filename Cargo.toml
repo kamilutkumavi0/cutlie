@@ -3,7 +3,11 @@ name = "cutlie"
 version = "0.1.0"
 edition = "2021"
 description = "Cutlie is a short cut tool for you."
-license= "MIT"
+license = "MIT"
+repository = "https://github.com/kamilutkumavi0/cutlie" 
+categories = ["command-line-utilities"]
+keywords = ["cli", "shortcut"]
+
 
 [dependencies]
 clap = { version = "4.5.28", features = ["derive"] }
