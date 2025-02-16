@@ -12,15 +12,31 @@ fn main() {
     let args = parser::parse();
     // println!("Parsed command: {:?}", args.command);
 
-    let home_dir = env::var("HOME").unwrap();
+    let home_dir = if let Ok(env_var) = env::var("HOME") {
+        env_var
+    } else {
+        eprintln!("Can't open home diroctary.");
+        return;
+    };
     let config_path = format!("{}/.cutlie.toml", home_dir);
 
     // Check if .cutlie.toml exists, create it if it doesn't
     if !std::path::Path::new(&config_path).exists() {
-        let mut file = File::create(&config_path).unwrap();
+        let mut file = if let Ok(file_temp) = File::create(&config_path) {
+            file_temp
+        } else {
+            return;
+        };
         let default_config = tomlrw::Config::new();
-        let contents = toml::to_string(&default_config).unwrap();
-        file.write_all(contents.as_bytes()).unwrap();
+        let contents = if let Ok(string_contents) = toml::to_string(&default_config) {
+            string_contents
+        } else {
+            return;
+        };
+        if let Ok(_) = file.write_all(contents.as_bytes()) {
+        } else {
+            return;
+        };
     }
 
     match args.command {
@@ -44,26 +60,26 @@ fn main() {
             }
             if !checker {
                 config.commands.push(command);
-                tomlrw::write(&config).unwrap();
+                if let Ok(_) = tomlrw::write(&config) {}
             }
         }
         parser::Commands::Delete { name } => {
-            let mut config = tomlrw::read().unwrap();
+            let mut config = tomlrw::read().unwrap_or(tomlrw::Config::new());
             config.commands.retain(|command| command.key != name);
-            tomlrw::write(&config).unwrap();
+            if let Ok(_) = tomlrw::write(&config) {}
         }
         parser::Commands::Update { name, value } => {
-            let mut config = tomlrw::read().unwrap();
+            let mut config = tomlrw::read().unwrap_or(tomlrw::Config::new());
             for command in &mut config.commands {
                 if command.key == name {
                     command.value = value;
                     break;
                 }
             }
-            tomlrw::write(&config).unwrap();
+            if let Ok(_) = tomlrw::write(&config) {}
         }
         parser::Commands::Run { name } => {
-            let config = tomlrw::read().unwrap();
+            let config = tomlrw::read().unwrap_or(tomlrw::Config::new());
             let mut sim_vec: Vec<&Command> = Vec::new();
             let mut checker_runner = false;
             for command in &config.commands {
@@ -90,7 +106,7 @@ fn main() {
             }
         }
         parser::Commands::List => {
-            let config = tomlrw::read().unwrap();
+            let config = tomlrw::read().unwrap_or(tomlrw::Config::new());
             for command in &config.commands {
                 println!("{}", command);
             }
