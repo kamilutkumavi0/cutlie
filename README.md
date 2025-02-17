@@ -108,12 +108,6 @@ We have exciting plans for the future development of Cutlie. Here are some of th
 
 - **Cross-Platform Support**: We aim to ensure that Cutlie works seamlessly on different operating systems, including Windows, macOS, and Linux.
 
-- **Integration with Cloud Services**: We plan to integrate Cutlie with popular cloud services, allowing users to sync their commands across multiple devices and share them with others.
-
-- **Improved User Interface**: We will work on enhancing the user interface of Cutlie, making it more intuitive and user-friendly.
-
-- **Extensibility**: We plan to provide a plugin system that allows users to extend the functionality of Cutlie by creating and sharing custom plugins.
-
 - **Documentation and Tutorials**: We will create comprehensive documentation and tutorials to help users get the most out of Cutlie.
 
 - **Community Involvement**: We encourage community involvement and plan to actively engage with users, gather feedback, and incorporate their suggestions into future releases.
