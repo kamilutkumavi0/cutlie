@@ -4,6 +4,10 @@ mod tests {
     use crate::tomlrw::{self, Command};
     use clap::Parser;
 
+    /// Test for the `add` command in the parser module.
+    ///
+    /// This test verifies that the `add` command correctly parses the input arguments
+    /// and assigns the expected values to the `name`, `value`, and `description` fields.
     #[test]
     fn test_parser_add_command() {
         let args = parser::Cli::parse_from(&["cutlie", "add", "test", "--value", "echo test"]);
@@ -21,6 +25,10 @@ mod tests {
         }
     }
 
+    /// Test for the `run` function in the runner module.
+    ///
+    /// This test verifies that the `run` function correctly executes the given command
+    /// and produces the expected output.
     #[test]
     fn test_runner_run() {
         let output = std::process::Command::new("sh")
@@ -31,6 +39,10 @@ mod tests {
         assert_eq!(String::from_utf8_lossy(&output.stdout), "test\n");
     }
 
+    /// Test for the `read` and `write` functions in the tomlrw module.
+    ///
+    /// This test verifies that the `read` and `write` functions correctly read and write
+    /// the configuration file, and that the written configuration matches the expected values.
     #[test]
     fn test_tomlrw_read_write() {
         let command = Command {
