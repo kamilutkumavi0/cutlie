@@ -113,3 +113,20 @@ We have exciting plans for the future development of Cutlie. Here are some of th
 - **Community Involvement**: We encourage community involvement and plan to actively engage with users, gather feedback, and incorporate their suggestions into future releases.
 
 Stay tuned for updates and new releases as we continue to improve and expand Cutlie!
+
+## Contributing
+
+We welcome contributions to Cutlie! If you would like to contribute, please follow these guidelines:
+
+1. Fork the repository and create a new branch for your feature or bug fix.
+2. Write clear and concise commit messages.
+3. Ensure that your code follows the project's coding style and conventions.
+4. Write tests for your changes and ensure that all existing tests pass.
+5. Submit a pull request with a detailed description of your changes.
+
+## Contact
+
+If you have any questions, suggestions, or feedback, please feel free to contact the project maintainer:
+
+- Name: Kamil Utku Mavi
+- Email: kamilutkumavi0@example.com
