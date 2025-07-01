@@ -1,5 +1,5 @@
 # cutlie
-auth: kamilutkumavi0
+
 Cutlie is a short cut tool for you.
 
 ## Installation
