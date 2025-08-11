@@ -1,4 +1,4 @@
-//! Toml read and writer for saving commands
+//! Toml read and writer for saving commands and issues
 use serde::{Deserialize, Serialize};
 use std::env;
 use std::fmt;
@@ -16,17 +16,35 @@ pub struct Command {
     pub description: Option<String>,
 }
 
-/// All Commands stored in this struct
+/// Issue is struct for tracking identified problems
+#[derive(Serialize, Deserialize, Clone)]
+pub struct Issue {
+    pub id: u32,
+    pub title: String,
+    pub description: Option<String>,
+    pub severity: String,
+    pub status: String,
+    pub created_by: String,
+}
+
+/// All Commands and Issues stored in this struct
 #[derive(Serialize, Deserialize)]
 pub struct Config {
     pub commands: Vec<Command>,
+    pub issues: Vec<Issue>,
+    pub next_issue_id: u32,
 }
 
-/// creats new Config for initialization.
+/// creates new Config for initialization.
 impl Config {
     pub fn new() -> Config {
         let commands: Vec<Command> = Vec::new();
-        Config { commands }
+        let issues: Vec<Issue> = Vec::new();
+        Config { 
+            commands, 
+            issues, 
+            next_issue_id: 1 
+        }
     }
 }
 /// Making Command printable
@@ -37,6 +55,17 @@ impl fmt::Display for Command {
         } else {
             write!(f, "{}", self.key)
         }
+    }
+}
+
+/// Making Issue printable
+impl fmt::Display for Issue {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "#{} [{}] {}: {}", 
+               self.id, 
+               self.severity, 
+               self.title,
+               self.status)
     }
 }
 

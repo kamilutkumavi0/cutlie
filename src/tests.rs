@@ -1,7 +1,8 @@
 #[cfg(test)]
 mod tests {
     use crate::parser;
-    use crate::tomlrw::{self, Command};
+    use crate::tomlrw::{self, Command, Issue};
+    use crate::review;
     use clap::Parser;
 
     #[test]
@@ -52,5 +53,53 @@ mod tests {
             read_config.commands[0].description,
             Some("Test command".to_string())
         );
+    }
+
+    #[test]
+    fn test_issue_creation() {
+        let issue = Issue {
+            id: 1,
+            title: "Test issue".to_string(),
+            description: Some("Test description".to_string()),
+            severity: "Medium".to_string(),
+            status: "Open".to_string(),
+            created_by: "Test".to_string(),
+        };
+        
+        assert_eq!(issue.id, 1);
+        assert_eq!(issue.title, "Test issue");
+        assert_eq!(issue.severity, "Medium");
+        assert_eq!(issue.status, "Open");
+    }
+
+    #[test]
+    fn test_config_with_issues() {
+        let mut config = tomlrw::Config::new();
+        assert_eq!(config.issues.len(), 0);
+        assert_eq!(config.next_issue_id, 1);
+
+        let issue = Issue {
+            id: config.next_issue_id,
+            title: "Test issue".to_string(),
+            description: None,
+            severity: "Low".to_string(),
+            status: "Open".to_string(),
+            created_by: "Test".to_string(),
+        };
+
+        config.issues.push(issue);
+        config.next_issue_id += 1;
+
+        assert_eq!(config.issues.len(), 1);
+        assert_eq!(config.next_issue_id, 2);
+        assert_eq!(config.issues[0].title, "Test issue");
+    }
+
+    #[test]
+    fn test_review_module_exists() {
+        // Test that review module can analyze issues
+        let issues = review::perform_review();
+        // The review should find some issues in the codebase
+        assert!(!issues.is_empty());
     }
 }

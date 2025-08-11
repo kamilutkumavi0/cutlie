@@ -14,6 +14,14 @@ Once you have Rust and Cargo installed, you can install Cutlie by running the fo
 cargo install cutlie
 ```
 
+## Features
+
+- **Command Management**: Add, delete, update, and run custom shell commands with shortcuts.
+- **Fuzzy Matching**: Smart command suggestions when you mistype a command name.
+- **Code Review**: Automated analysis of the codebase to identify common issues.
+- **Issue Tracking**: Built-in system to track and manage identified problems and improvements.
+- **TOML Configuration**: Simple file-based configuration storage.
+
 ## Usage
 
 Cutlie provides a command-line interface for managing and running shortcuts for specific commands. Here are the available commands:
@@ -78,6 +86,43 @@ Example:
 cutlie list
 ```
 
+### Review codebase for issues
+
+```sh
+cutlie review
+```
+
+This command analyzes the codebase and identifies common issues such as typos, error handling problems, documentation gaps, and security concerns. The identified issues are automatically added to the issue tracker.
+
+### Manage tracked issues
+
+```sh
+cutlie issues <action>
+```
+
+Available issue actions:
+
+- **List all issues**: `cutlie issues list`
+- **Add manual issue**: `cutlie issues add "<title>" --description "<description>" --severity "<severity>"`
+- **Show issue details**: `cutlie issues show <id>`
+- **Resolve issue**: `cutlie issues resolve <id>`
+
+Examples:
+
+```sh
+# List all tracked issues
+cutlie issues list
+
+# Add a new issue manually
+cutlie issues add "Need better error messages" --description "Improve user feedback" --severity "Medium"
+
+# Show detailed information about issue #5
+cutlie issues show 5
+
+# Mark issue #3 as resolved
+cutlie issues resolve 3
+```
+
 ## Dependencies
 
 Cutlie depends on the following libraries:
@@ -101,6 +146,8 @@ The project structure is as follows:
 - `src/parser.rs`: Handles command-line argument parsing using the `clap` library.
 - `src/runner.rs`: Executes the commands using the `std::process::Command` module.
 - `src/tomlrw.rs`: Reads and writes the configuration file (`.cutlie.toml`) using the `toml` and `serde` libraries.
+- `src/review.rs`: Analyzes the codebase for common issues and problems.
+- `src/issues.rs`: Manages the issue tracking system for identified problems.
 
 ## Future Plans
 

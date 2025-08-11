@@ -1,6 +1,8 @@
 use cutlie::parser;
 use cutlie::runner;
 use cutlie::tomlrw::{self, Command};
+use cutlie::review;
+use cutlie::issues;
 use dialoguer::Select;
 use std::env;
 use std::fs::File;
@@ -107,6 +109,52 @@ fn main() {
             let config = tomlrw::read().unwrap_or(tomlrw::Config::new());
             for command in &config.commands {
                 println!("{}", command);
+            }
+        }
+        parser::Commands::Review => {
+            println!("Performing code review...");
+            let review_issues = review::perform_review();
+            
+            if review_issues.is_empty() {
+                println!("No issues found during review.");
+            } else {
+                println!("Found {} issue(s):", review_issues.len());
+                for issue in &review_issues {
+                    println!("  - {}", issue.title);
+                }
+                
+                let mut config = tomlrw::read().unwrap_or(tomlrw::Config::new());
+                review::add_review_issues_to_config(&mut config, review_issues);
+                
+                if let Err(_) = tomlrw::write(&config) {
+                    eprintln!("Failed to save review results to configuration.");
+                } else {
+                    println!("Review results saved to issue tracker.");
+                }
+            }
+        }
+        parser::Commands::Issues { action } => {
+            let mut config = tomlrw::read().unwrap_or(tomlrw::Config::new());
+            
+            match action {
+                parser::IssueActions::List => {
+                    issues::list_issues(&config);
+                }
+                parser::IssueActions::Add { title, description, severity } => {
+                    issues::add_issue(&mut config, title, description, severity);
+                    if let Err(_) = tomlrw::write(&config) {
+                        eprintln!("Failed to save new issue.");
+                    }
+                }
+                parser::IssueActions::Resolve { id } => {
+                    issues::resolve_issue(&mut config, id);
+                    if let Err(_) = tomlrw::write(&config) {
+                        eprintln!("Failed to save issue resolution.");
+                    }
+                }
+                parser::IssueActions::Show { id } => {
+                    issues::show_issue(&config, id);
+                }
             }
         }
     }

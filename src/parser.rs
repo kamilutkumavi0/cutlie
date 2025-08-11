@@ -31,8 +31,34 @@ pub enum Commands {
     },
     /// runs the value oh given key
     Run { name: String },
-    /// Lists all cammands with description.
+    /// Lists all commands with description.
     List,
+    /// Review codebase and identify issues
+    Review,
+    /// Manage tracked issues
+    Issues {
+        #[command(subcommand)]
+        action: IssueActions,
+    },
+}
+
+/// Sub commands for issue management
+#[derive(Subcommand, Debug)]
+pub enum IssueActions {
+    /// List all tracked issues
+    List,
+    /// Add a new issue manually
+    Add {
+        title: String,
+        #[arg(short, long)]
+        description: Option<String>,
+        #[arg(short, long)]
+        severity: Option<String>,
+    },
+    /// Mark an issue as resolved
+    Resolve { id: u32 },
+    /// Show detailed information about an issue
+    Show { id: u32 },
 }
 
 pub fn parse() -> Cli {
