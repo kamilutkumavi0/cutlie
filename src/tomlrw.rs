@@ -1,4 +1,10 @@
+#![doc = include_str!("../README.md")]
+
 //! Toml read and writer for saving commands
+//! 
+//! This module provides functionality to read and write commands to a TOML configuration file.
+//! It defines the `Command` and `Config` structs, and provides functions to read and write the configuration file.
+
 use serde::{Deserialize, Serialize};
 use std::env;
 use std::fmt;
@@ -41,6 +47,20 @@ impl fmt::Display for Command {
 }
 
 /// Reads all configs
+///
+/// This function reads the configuration file from the user's home directory and returns a `Config` struct.
+/// If the file does not exist or cannot be read, it returns `None`.
+///
+/// # Examples
+///
+/// ```
+/// let config = tomlrw::read();
+/// if let Some(config) = config {
+///     println!("Config read successfully");
+/// } else {
+///     println!("Failed to read config");
+/// }
+/// ```
 pub fn read() -> Option<Config> {
     let home_dir = if let Ok(env_var) = env::var("HOME") {
         env_var
@@ -67,6 +87,27 @@ pub enum WriteError {
 }
 
 /// Writes new config.
+///
+/// This function writes the given `Config` struct to the configuration file in the user's home directory.
+/// If the file cannot be created or written to, it returns a `WriteError`.
+///
+/// # Examples
+///
+/// ```
+/// let command = tomlrw::Command {
+///     key: "test".to_string(),
+///     value: "echo test".to_string(),
+///     description: Some("Test command".to_string()),
+/// };
+/// let mut config = tomlrw::Config::new();
+/// config.commands.push(command);
+/// let result = tomlrw::write(&config);
+/// if let Ok(_) = result {
+///     println!("Config written successfully");
+/// } else {
+///     println!("Failed to write config");
+/// }
+/// ```
 pub fn write(config: &Config) -> Result<(), WriteError> {
     let home_dir = if let Ok(env_var) = env::var("HOME") {
         env_var
